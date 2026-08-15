@@ -6,7 +6,7 @@ from app.db import get_db
 from app.models import AuditLog, LinkType, ObjectType
 from app.schemas import LinkTypeIn, LinkTypeOut, ObjectTypeIn, ObjectTypeOut
 
-router = APIRouter(prefix="/ontology")
+router = APIRouter()
 
 
 @router.get("/object-types", response_model=list[ObjectTypeOut])

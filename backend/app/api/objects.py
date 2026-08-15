@@ -7,7 +7,7 @@ from app.db import get_db
 from app.models import Link, LinkType, Object, ObjectType
 from app.schemas import GraphEdge, GraphNode, GraphOut, NeighborOut, ObjectDetailOut, ObjectOut
 
-router = APIRouter(prefix="/objects")
+router = APIRouter()
 
 
 @router.get("", response_model=list[ObjectOut])

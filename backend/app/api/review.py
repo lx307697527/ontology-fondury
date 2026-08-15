@@ -4,9 +4,9 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.models import AuditLog, Link, LinkType, Object, ObjectType
-from app.schemas import ObjectTypeOut, ObjectOut, LinkTypeOut, ReviewAction
+from app.schemas import ReviewAction
 
-router = APIRouter(prefix="/review")
+router = APIRouter()
 
 _ENTITIES = {"object_type": ObjectType, "link_type": LinkType, "object": Object, "link": Link}
 
@@ -14,15 +14,9 @@ _ENTITIES = {"object_type": ObjectType, "link_type": LinkType, "object": Object,
 @router.get("/queue")
 def review_queue(db: Session = Depends(get_db)):
     return {
-        "object_types": ObjectTypeOut.model_validate(
-            db.scalars(select(ObjectType).where(ObjectType.status == "draft").limit(50)).all()
-        ),
-        "link_types": LinkTypeOut.model_validate(
-            db.scalars(select(LinkType).where(LinkType.status == "draft").limit(50)).all()
-        ),
-        "objects": ObjectOut.model_validate(
-            db.scalars(select(Object).where(Object.status == "draft").order_by(Object.confidence.desc()).limit(50)).all()
-        ),
+        "object_types": db.scalars(select(ObjectType).where(ObjectType.status == "draft").limit(50)).all(),
+        "link_types": db.scalars(select(LinkType).where(LinkType.status == "draft").limit(50)).all(),
+        "objects": db.scalars(select(Object).where(Object.status == "draft").order_by(Object.confidence.desc()).limit(50)).all(),
     }
 
 

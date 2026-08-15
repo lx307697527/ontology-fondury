@@ -58,7 +58,7 @@ extraction_runs（每次 LLM 调用的审计）   audit_logs（所有人工操�
 ## 六、周里程碑（每周末演示，定义完成 = DoD）
 
 - **W1**：跑通"上传 → 解析分块 → LLM 归纳出第一批 object types（草稿）"。DoD：对一份真实企业文档，API 返回 ≥3 个可读的 object type 草案。
-- **W2**：图谱成形。DoD：`/api/graph` 返回 ≥50 对象 ≥80 关系，前端图可浏览；REST 查询/遍历可用。
+- **W2**：图谱成形。DoD：`/api/objects/graph` 返回 ≥50 对象 ≥80 关系，前端图可浏览；REST 查询/遍历可用。
 - **W3**：治理与消费闭环。DoD：审核队列可 approve（徽章升级+审计）；MCP endpoint 可被外部 LLM 客户端调用完成一次问答。
 - **W4**：端到端硬化。DoD：docker-compose 一键起；一个完整演示脚本（企业文档 → 图谱 → Agent 问答）；错误路径有兜底；周报可对外。
 
