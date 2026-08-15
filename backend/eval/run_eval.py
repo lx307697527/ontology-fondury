@@ -15,7 +15,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from app.services.llm import LLM, PROMPT_VERSION  # noqa: E402
+from app.modules.services.llm import LLM, PROMPT_VERSION  # noqa: E402
 
 EVAL_DIR = Path(__file__).resolve().parent
 

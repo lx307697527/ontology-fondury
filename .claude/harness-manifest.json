@@ -1,0 +1,44 @@
+{
+  "files": {
+    ".claude/agents/explorer.md": {
+      "sha256": "8f902ab6faa5f4edbd4c8c9675817d7e8d58ec665f8527af613dddf9d0c05630"
+    },
+    ".claude/agents/implementer.md": {
+      "sha256": "37b870ccd1a552411cdbcd0c86c7a85866039bec592ddba0e66ed8b27de1856d"
+    },
+    ".claude/agents/reviewer.md": {
+      "sha256": "1cba6671aa5e8953118017cd016045afd38d8a1bb243289d918ccb1ffce8a302"
+    },
+    ".claude/agents/test-author.md": {
+      "sha256": "d29938182d71c33824477681067e0abf33caac56f709bcf58439ee97d524c82c"
+    },
+    ".claude/agents/test-runner.md": {
+      "sha256": "e944f60a20bbb4bc05e7fcd5bfc4e5deb1f1cef8d0f24f2ba813d61128da9ce5"
+    },
+    ".claude/hooks/session-log-visibility.sh": {
+      "sha256": "1d3cfebfab9120e46493a5ac0912e8a478bcd6e31edd7b2b87f7fb249ed1ba6d"
+    },
+    ".claude/hooks/session-log.sh": {
+      "sha256": "6401c59940f0317e8e8567493f7e67e658357d4b8149d29c2c1fc985864605c2"
+    },
+    ".claude/settings.json": {
+      "sha256": "781d3a0595d131cd9012c4933654d94aafe77a1bd7f75959be14176421833df4"
+    },
+    ".claude/skills/bug-fix/SKILL.md": {
+      "sha256": "b55797a57db9f3fa7bd22ab225553db59e1955e959d3e71df032cdec4e54467c"
+    },
+    ".claude/skills/commit/SKILL.md": {
+      "sha256": "8baa0c76656b0280eb5c2c7bdddb506eb4c2bb52c13bb15488ada141e51b095f"
+    },
+    ".claude/skills/orchestrator/SKILL.md": {
+      "sha256": "c268ac005677242399acb2d2baafa874b3a4d1b7f5e9adc8e49f13d74e97daa4"
+    },
+    ".claude/skills/reflect/SKILL.md": {
+      "sha256": "4c777d7f1c9aba2c26be806ad11a95822cdc0ad0e16c937dbf6ef0158876e4b1"
+    },
+    ".claude/skills/task-intake/SKILL.md": {
+      "sha256": "22e465eea07a6c598dc1404ca179acd2bee5f80a1374531cda62b223e1c716a6"
+    }
+  },
+  "harness_version": "0.2.0"
+}

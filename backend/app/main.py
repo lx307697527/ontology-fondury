@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import documents, objects, ontology, review, search
+from app.modules.api import documents, objects, ontology, review, search
 from app.db import Base, engine
 
 app = FastAPI(title="ontology-fondry", version="0.1.0")

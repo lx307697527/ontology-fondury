@@ -5,8 +5,8 @@ from sqlalchemy.orm import Session
 from app.db import get_db
 from app.models import Document
 from app.schemas import DocumentOut, ProcessResult
-from app.services import parsing
-from app.services.pipeline import run_pipeline
+from app.modules.services import parsing
+from app.modules.services.pipeline import run_pipeline
 
 router = APIRouter()
 

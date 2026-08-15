@@ -1,0 +1,55 @@
+# claude-dev-harness 0.2.0
+# Every path and id shape the harness uses comes from this file. Nothing is
+# derived from where the package happens to be installed, which is the whole
+# point of the seam: rename `ops/` to anything and the guards follow.
+
+[harness]
+version = "0.2.0"
+
+[paths]
+specs = "ops/specs"
+backlog = "ops/backlog/backlog.yaml"
+incidents = "ops/incidents"
+session_logs = "ops/session-logs"
+transcripts = "ops/session-transcripts"
+rules = "ops/rules"
+
+[ids]
+# The id shape. The matching regex is BUILT from these rather than written by
+# hand, because a hand-written pattern can silently make every id-linking
+# verdict match nothing while still reporting success.
+prefixes = ["FEAT", "BUG"]
+
+[platform]
+# github | none. Under "none", verdicts that read PR labels report themselves
+# skipped rather than passing — a label gate that passes where labels cannot be
+# read is not a gate.
+# 本仓库目前为 none：guards.yml 等三个 workflow 需要 CI 能 `pip install
+# claude-dev-harness`，而该包私有未发布。包可安装后改回 "github" 并跑
+# `harness upgrade` 即补装 workflows。
+kind = "none"
+
+[modules]
+# modules/ 的每个子目录是一个模块，各欠一份 CLAUDE.md 地图（## Key files
+# 列真实文件）；模块内代码变更须与地图同变更（doc-sync 门禁）。
+# 注意：module root 下必须只有模块目录——任何根级 .py 都会生成 __pycache__
+# 从而被当成"无地图的模块"。frontend 暂未声明同理（node_modules/.next）。
+roots = ["backend/app/modules"]
+map = "CLAUDE.md"
+
+[extensions]
+# Consumer-specific guards live here. They are discovered and run by the same
+# runner, accumulate into the same verdict, and are rejected without a self-test.
+guards = "ops/guards"
+
+[backlog]
+# The delivery store as forge issues. All three keys are optional — the
+# defaults are the convention the shipped backlog workflows create.
+#   label            which issues are delivery items
+#   in_review_label  what an open issue carries while its phase is in review
+#   issues_since     exclusive commit-ish bound of the issue era; REQUIRED by
+#                    `harness backlog reconcile`, which refuses to measure an
+#                    unbounded era (file-era claims have no issues by design)
+label = "backlog"
+in_review_label = "status:in-review"
+# issues_since = "<the commit before your first backlog issue>"

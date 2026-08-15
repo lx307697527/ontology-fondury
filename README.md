@@ -33,9 +33,11 @@ cd backend && pip install -e ".[dev]" && uvicorn app.main:app --reload
 ## 目录
 
 ```
-backend/   FastAPI + SQLAlchemy + PostgreSQL；services/ 内为 LLM 管线
+backend/   FastAPI + SQLAlchemy + PostgreSQL；app/modules/ 内为 LLM 管线（services）与路由（api）
 frontend/  Next.js 15 + Cytoscape.js 图浏览
 docs/      PLAN.md — 一个月执行计划（范围、分工、周里程碑）
+ops/       治理：specs（规格三件套）/ backlog（交付账本）/ incidents（事故台账）
+samples/   演示用企业文档
 ```
 
 📖 文档与路线图见 [Wiki](https://github.com/lx307697527/ontology-fondury/wiki) · 开发任务见 [Issues](https://github.com/lx307697527/ontology-fondury/issues)

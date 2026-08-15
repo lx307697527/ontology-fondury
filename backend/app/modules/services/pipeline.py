@@ -8,8 +8,8 @@ from sqlalchemy.orm import Session
 from app.config import get_settings
 from app.models import AuditLog, Chunk, Document, ExtractionRun, Link, LinkType, Object, ObjectType
 from app.schemas import ProcessResult
-from app.services import parsing
-from app.services.llm import LLM
+from app.modules.services import parsing
+from app.modules.services.llm import LLM
 
 _SAMPLE_CHUNKS = 8
 _MAX_CHUNKS_PER_DOC = 60

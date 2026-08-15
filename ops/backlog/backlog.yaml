@@ -1,0 +1,34 @@
+# 交付账本（file-era）。platform=none 期间本文件即唯一交付存储：done 由维护者
+# 在工作合入 main 时写入并带 completed 日期；接入 GitHub 工作流（issue-era）后
+# done 改由合并自动化写入，届时此注释与机制一并更新。
+items:
+- id: FEAT-001
+  title: >-
+    LLM 本体归纳与实例抽取管线（上传→分块→归纳→抽取→图谱→治理审核）。
+    权威规格：ops/specs/FEAT-001-llm-ontology-pipeline/（prd / design / testplan）。
+  status: in_progress
+  bounce_count: 0
+  phases:
+  - phase: 1
+    title: >-
+      W1 管线跑通：上传→解析分块→LLM 归纳。DoD：真实企业文档 API 返回 ≥3 个可读
+      object type 草案。实测 8 个（deepseek-v4-pro@prompt-v1），另附 8 link types、
+      41 objects、31 links；评估集基线 45%/70%（修正口径）。
+    status: done
+    completed: 2026-08-16
+    depends_on: []
+  - phase: 2
+    title: >-
+      W2 图谱成形：/api/objects/graph ≥50 对象 ≥80 关系（现 41/31，需补演示文档）、
+      前端 Cytoscape 图可浏览、REST 查询/遍历可用；prompt v2 攻角色/组织单元召回
+      （评估通过率不得低于 70% 基线）。
+    status: in_progress
+    depends_on: [1]
+  - phase: 3
+    title: W3 治理与消费闭环：审核队列徽章升级+审计（已具备）；MCP endpoint 供外部 LLM 客户端完成一次问答。
+    status: pending
+    depends_on: [2]
+  - phase: 4
+    title: W4 端到端硬化：docker-compose 一键起、完整演示脚本、错误路径兜底、周报。
+    status: pending
+    depends_on: [3]
