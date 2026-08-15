@@ -1,0 +1,535 @@
+{
+  "ran_at": "2026-08-16T00:59:19",
+  "model": "deepseek-v4-pro@prompt-v1",
+  "prompt_version": "v1",
+  "pass_rate": 0.45,
+  "mean_recall": 0.802,
+  "results": [
+    {
+      "id": "hr-onboarding",
+      "ok": false,
+      "recall": 0.5,
+      "hit": [
+        "employee",
+        "department"
+      ],
+      "miss": [
+        "position",
+        "mentor"
+      ],
+      "proposed": [
+        "department",
+        "employee",
+        "onboarding_training",
+        "personnel_file"
+      ],
+      "extra": [
+        "onboarding_training",
+        "personnel_file"
+      ]
+    },
+    {
+      "id": "hr-leave",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "employee",
+        "leave_type",
+        "leave_request"
+      ],
+      "miss": [],
+      "proposed": [
+        "approval_task",
+        "attendance_exception",
+        "department",
+        "employee",
+        "leave_request",
+        "leave_type"
+      ],
+      "extra": [
+        "approval_task",
+        "attendance_exception",
+        "department"
+      ]
+    },
+    {
+      "id": "it-asset",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "device",
+        "employee",
+        "vendor",
+        "repair_ticket"
+      ],
+      "miss": [],
+      "proposed": [
+        "asset",
+        "employee",
+        "inventory_check",
+        "repair_order",
+        "supplier"
+      ],
+      "extra": [
+        "inventory_check"
+      ]
+    },
+    {
+      "id": "sales-contract",
+      "ok": false,
+      "recall": 0.8,
+      "hit": [
+        "customer",
+        "contract",
+        "product",
+        "sales_order"
+      ],
+      "miss": [
+        "sales_rep"
+      ],
+      "proposed": [
+        "customer",
+        "employee",
+        "invoice",
+        "product",
+        "sales_contract",
+        "sales_contract_item",
+        "sales_order"
+      ],
+      "extra": [
+        "employee",
+        "invoice",
+        "sales_contract_item"
+      ]
+    },
+    {
+      "id": "procurement",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "supplier",
+        "material",
+        "purchase_order",
+        "inspection"
+      ],
+      "miss": [],
+      "proposed": [
+        "inspection_record",
+        "material",
+        "purchase_order",
+        "purchase_request",
+        "supplier",
+        "supplier_evaluation",
+        "warehouse_entry"
+      ],
+      "extra": [
+        "supplier_evaluation",
+        "warehouse_entry"
+      ]
+    },
+    {
+      "id": "cs-ticket",
+      "ok": false,
+      "recall": 0.5,
+      "hit": [
+        "customer",
+        "agent"
+      ],
+      "miss": [
+        "ticket",
+        "escalation"
+      ],
+      "proposed": [
+        "customer",
+        "service_quality_review",
+        "support_agent",
+        "support_ticket"
+      ],
+      "extra": [
+        "service_quality_review",
+        "support_ticket"
+      ]
+    },
+    {
+      "id": "logistics",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "sales_order",
+        "warehouse",
+        "carrier",
+        "shipment"
+      ],
+      "miss": [],
+      "proposed": [
+        "carrier",
+        "customer",
+        "delivery_receipt",
+        "route",
+        "sales_order",
+        "shipment",
+        "warehouse"
+      ],
+      "extra": [
+        "customer",
+        "delivery_receipt",
+        "route"
+      ]
+    },
+    {
+      "id": "finance-expense",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "employee",
+        "expense_report",
+        "cost_center",
+        "business_trip"
+      ],
+      "miss": [],
+      "proposed": [
+        "cost_center",
+        "department",
+        "employee",
+        "expense_report",
+        "invoice",
+        "travel_request"
+      ],
+      "extra": [
+        "department",
+        "invoice"
+      ]
+    },
+    {
+      "id": "project",
+      "ok": false,
+      "recall": 0.5,
+      "hit": [
+        "project",
+        "milestone"
+      ],
+      "miss": [
+        "project_manager",
+        "member"
+      ],
+      "proposed": [
+        "employee",
+        "milestone",
+        "organizational_unit",
+        "project"
+      ],
+      "extra": [
+        "employee",
+        "organizational_unit"
+      ]
+    },
+    {
+      "id": "recruit",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "job_position",
+        "candidate",
+        "department",
+        "interview"
+      ],
+      "miss": [],
+      "proposed": [
+        "candidate",
+        "department",
+        "interview",
+        "job_position",
+        "job_posting",
+        "offer",
+        "recruitment_channel",
+        "recruitment_request"
+      ],
+      "extra": [
+        "job_posting",
+        "offer",
+        "recruitment_channel",
+        "recruitment_request"
+      ]
+    },
+    {
+      "id": "equipment",
+      "ok": false,
+      "recall": 0.5,
+      "hit": [
+        "equipment",
+        "spare_part"
+      ],
+      "miss": [
+        "technician",
+        "repair_ticket"
+      ],
+      "proposed": [
+        "equipment",
+        "equipment_anomaly",
+        "inspection_record",
+        "maintenance_plan",
+        "maintenance_work_order",
+        "oee_record",
+        "spare_part"
+      ],
+      "extra": [
+        "equipment_anomaly",
+        "inspection_record",
+        "maintenance_plan",
+        "maintenance_work_order",
+        "oee_record"
+      ]
+    },
+    {
+      "id": "product-release",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "product_version",
+        "feature",
+        "release",
+        "incident"
+      ],
+      "miss": [],
+      "proposed": [
+        "feature",
+        "improvement_item",
+        "incident",
+        "product_version",
+        "release",
+        "review_meeting",
+        "test_report"
+      ],
+      "extra": [
+        "improvement_item",
+        "review_meeting",
+        "test_report"
+      ]
+    },
+    {
+      "id": "bank-credit",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "borrower",
+        "loan",
+        "collateral"
+      ],
+      "miss": [
+        "branch"
+      ],
+      "proposed": [
+        "borrower",
+        "collateral",
+        "credit_approval",
+        "loan",
+        "loan_application",
+        "loan_product",
+        "non_performing_loan",
+        "post_loan_check"
+      ],
+      "extra": [
+        "credit_approval",
+        "loan_application",
+        "loan_product",
+        "non_performing_loan",
+        "post_loan_check"
+      ]
+    },
+    {
+      "id": "insurance",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "policy",
+        "policyholder",
+        "claim"
+      ],
+      "miss": [
+        "adjuster"
+      ],
+      "proposed": [
+        "claim_case",
+        "claim_payment",
+        "claim_report",
+        "complaint",
+        "customer",
+        "employee",
+        "policy"
+      ],
+      "extra": [
+        "claim_payment",
+        "claim_report",
+        "complaint",
+        "employee"
+      ]
+    },
+    {
+      "id": "education",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "student",
+        "course",
+        "instructor"
+      ],
+      "miss": [
+        "advisor"
+      ],
+      "proposed": [
+        "academic_change",
+        "course",
+        "course_enrollment",
+        "department",
+        "program",
+        "student",
+        "teacher",
+        "thesis"
+      ],
+      "extra": [
+        "academic_change",
+        "course_enrollment",
+        "department",
+        "program",
+        "thesis"
+      ]
+    },
+    {
+      "id": "lease",
+      "ok": false,
+      "recall": 0.5,
+      "hit": [
+        "tenant",
+        "lease_contract"
+      ],
+      "miss": [
+        "property",
+        "repair_ticket"
+      ],
+      "proposed": [
+        "commercial_property",
+        "department",
+        "lease_contract",
+        "maintenance_order",
+        "rent_payment",
+        "tenant"
+      ],
+      "extra": [
+        "commercial_property",
+        "department",
+        "maintenance_order",
+        "rent_payment"
+      ]
+    },
+    {
+      "id": "restaurant",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "dish",
+        "ingredient",
+        "supplier",
+        "store"
+      ],
+      "miss": [],
+      "proposed": [
+        "compliance_certificate",
+        "dish",
+        "ingredient",
+        "inventory_check",
+        "menu",
+        "purchase_order",
+        "recipe_card",
+        "store",
+        "supplier"
+      ],
+      "extra": [
+        "compliance_certificate",
+        "inventory_check",
+        "menu",
+        "purchase_order",
+        "recipe_card"
+      ]
+    },
+    {
+      "id": "pharma-trial",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "trial",
+        "site",
+        "patient",
+        "investigator"
+      ],
+      "miss": [],
+      "proposed": [
+        "case_report_form",
+        "clinical_trial",
+        "investigator",
+        "regulatory_authority",
+        "safety_event",
+        "site",
+        "sponsor",
+        "subject"
+      ],
+      "extra": [
+        "case_report_form",
+        "regulatory_authority",
+        "safety_event",
+        "sponsor"
+      ]
+    },
+    {
+      "id": "software-license",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "software_license",
+        "vendor",
+        "department"
+      ],
+      "miss": [
+        "device"
+      ],
+      "proposed": [
+        "department",
+        "employee",
+        "open_source_component",
+        "software",
+        "software_license",
+        "supplier"
+      ],
+      "extra": [
+        "employee",
+        "open_source_component",
+        "software"
+      ]
+    },
+    {
+      "id": "health-commerce",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "script",
+        "claim",
+        "anchor"
+      ],
+      "miss": [
+        "product"
+      ],
+      "proposed": [
+        "anchor",
+        "claim",
+        "health_food",
+        "live_recording",
+        "live_session",
+        "script"
+      ],
+      "extra": [
+        "health_food",
+        "live_recording",
+        "live_session"
+      ]
+    }
+  ]
+}

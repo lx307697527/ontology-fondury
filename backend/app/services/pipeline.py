@@ -45,7 +45,7 @@ def _process(db: Session, doc: Document) -> ProcessResult:
     db.add_all(chunks)
     db.commit()
 
-    induction_run = ExtractionRun(document_id=doc.id, stage="induction", model=llm.model)
+    induction_run = ExtractionRun(document_id=doc.id, stage="induction", model=llm.model_label)
     db.add(induction_run)
     db.commit()
     proposal = llm.induce_schema(chunks_text[:_SAMPLE_CHUNKS])
@@ -60,7 +60,7 @@ def _process(db: Session, doc: Document) -> ProcessResult:
     db.commit()
 
     objects_upserted, links_upserted = 0, 0
-    extraction_run = ExtractionRun(document_id=doc.id, stage="extraction", model=llm.model)
+    extraction_run = ExtractionRun(document_id=doc.id, stage="extraction", model=llm.model_label)
     db.add(extraction_run)
     db.commit()
     for chunk in chunks:

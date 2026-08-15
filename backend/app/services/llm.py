@@ -1,10 +1,14 @@
 import json
+from json import JSONDecodeError
 
 from openai import OpenAI
 
 from app.config import get_settings
 
 _JSON_ONLY = "只输出一个合法的 JSON 对象，不要包含 markdown 代码块或任何其他文字。Output only one valid JSON object, no markdown fences, no prose."
+
+# 提示词版本化：改提示词必须递增版本号，随 ExtractionRun.model 落库（如 gpt-4o-mini@prompt-v1）
+PROMPT_VERSION = "v1"
 
 INDUCTION_SYSTEM = f"""你是一位企业本体（ontology）架构师，风格参照 Palantir Foundry 的建模方法：以业务运营为中心，而不是照搬源系统的表结构。
 
@@ -36,18 +40,33 @@ class LLM:
     def __init__(self) -> None:
         s = get_settings()
         self.model = s.llm_model
-        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key)
+        self.model_label = f"{s.llm_model}@prompt-{PROMPT_VERSION}"
+        # 显式超时：SDK 默认 600s × 内置重试叠加 complete_json 的 3 次重试会拖死管线
+        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key, timeout=120.0, max_retries=1)
 
     def complete_json(self, system: str, user: str) -> dict:
-        resp = self.client.chat.completions.create(
-            model=self.model,
-            temperature=0.2,
-            messages=[
-                {"role": "system", "content": system},
-                {"role": "user", "content": user},
-            ],
-        )
-        return parse_json(resp.choices[0].message.content or "")
+        # 推理型/小参数模型偶发包裹代码块或夹杂文字，解析失败时带错误信息重试
+        messages = [
+            {"role": "system", "content": system},
+            {"role": "user", "content": user},
+        ]
+        last_error = ""
+        for _ in range(3):
+            resp = self.client.chat.completions.create(
+                model=self.model,
+                temperature=0.2,
+                messages=messages,
+            )
+            content = resp.choices[0].message.content or ""
+            try:
+                return parse_json(content)
+            except JSONDecodeError as e:
+                last_error = f"{e}（原文开头：{content[:120]!r}）"
+                messages.append({"role": "assistant", "content": content})
+                messages.append(
+                    {"role": "user", "content": f"上一条输出不是合法 JSON：{last_error}。请严格只输出一个合法的 JSON 对象。"}
+                )
+        raise ValueError(f"LLM 连续 3 次未能输出合法 JSON：{last_error}")
 
     def induce_schema(self, sample_chunks: list[str]) -> dict:
         samples = "\n\n---\n\n".join(f"【片段 {i + 1}】\n{c}" for i, c in enumerate(sample_chunks))
@@ -66,4 +85,31 @@ def parse_json(text: str) -> dict:
         text = text.split("```")[1]
         if text.startswith("json"):
             text = text[4:]
-    return json.loads(text.strip())
+    text = text.strip()
+    try:
+        return json.loads(text)
+    except JSONDecodeError:
+        # 兜底：截取首个配平的花括号块，容忍前后夹杂的说明文字
+        start = text.find("{")
+        if start == -1:
+            raise
+        depth, in_string, escaped = 0, False, False
+        for i in range(start, len(text)):
+            ch = text[i]
+            if in_string:
+                if escaped:
+                    escaped = False
+                elif ch == "\\":
+                    escaped = True
+                elif ch == '"':
+                    in_string = False
+                continue
+            if ch == '"':
+                in_string = True
+            elif ch == "{":
+                depth += 1
+            elif ch == "}":
+                depth -= 1
+                if depth == 0:
+                    return json.loads(text[start : i + 1])
+        raise
