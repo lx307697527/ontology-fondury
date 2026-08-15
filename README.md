@@ -37,6 +37,8 @@ frontend/  Next.js 15 + Cytoscape.js 图浏览
 docs/      PLAN.md — 一个月执行计划（范围、分工、周里程碑）
 ```
 
+📖 文档与路线图见 [Wiki](https://github.com/lx307697527/ontology-fondury/wiki) · 开发任务见 [Issues](https://github.com/lx307697527/ontology-fondury/issues)
+
 ## 试用流程
 
 1. `POST /api/documents` 上传一份企业文档（如产品说明、规章制度）
