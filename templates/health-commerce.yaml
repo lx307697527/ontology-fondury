@@ -1,0 +1,103 @@
+# 保健品与大健康带货合规 · 行业本体模板（草案 v0）
+# 场景：从代工供应链（配方/资质/质检）到直播与达人销售（话术/宣称/规则）的全链路知识图谱
+# 用法：加载为本体基座，LLM 在此基础上适配扩展；status/provenance 沿用平台审核流
+name: health-commerce
+display_name: 保健品与大健康带货合规
+description: 覆盖保健食品/膳食补充剂从代工生产到直播带货、出海销售的知识与合规层
+
+object_types:
+  - name: product
+    display_name: 产品
+    description: 保健品/膳食补充剂产品（SKU 级），如"褪黑素软糖 60 粒装"
+    properties:
+      - {name: sku, display_name: SKU编码, dtype: string}
+      - {name: form, display_name: 剂型, dtype: string}
+      - {name: spec, display_name: 规格, dtype: string}
+      - {name: target_market, display_name: 目标市场, dtype: string, description: "cn / us / eu / sea 等"}
+      - {name: approval_status, display_name: 注册备案状态, dtype: string, description: "如蓝帽子备案号、FDA 注册号"}
+
+  - name: ingredient
+    display_name: 成分原料
+    description: 原料/功效成分，承载用量上限与各市场禁售信息
+    properties:
+      - {name: daily_limit, display_name: 每日用量上限, dtype: string}
+      - {name: restricted_markets, display_name: 受限市场, dtype: string}
+      - {name: allowed_claims, display_name: 允许宣称, dtype: string, description: "如 FDA structure/function claim 白名单表述"}
+
+  - name: certification
+    display_name: 资质认证
+    description: 蓝帽子、FDA 注册、GMP、HACCP、SC 许可等
+    properties:
+      - {name: cert_no, display_name: 证书编号, dtype: string}
+      - {name: issuer, display_name: 发证机构, dtype: string}
+      - {name: scope, display_name: 覆盖范围, dtype: string}
+      - {name: valid_until, display_name: 有效期至, dtype: date}
+
+  - name: regulation
+    display_name: 法规条款
+    description: 广告法/食品安全法/平台规则/FTC 指引中的具体条款，是合规检查的依据锚点
+    properties:
+      - {name: jurisdiction, display_name: 管辖, dtype: string, description: "cn-ad-law / tiktok-shop-us / ftc 等"}
+      - {name: penalty_range, display_name: 罚则区间, dtype: string}
+      - {name: source_doc, display_name: 出处文档, dtype: string}
+
+  - name: claim
+    display_name: 功效宣称
+    description: 对产品功效的表述，审核后分 allowed / grayline / prohibited 三级
+    properties:
+      - {name: text, display_name: 宣称原文, dtype: string}
+      - {name: level, display_name: 合规分级, dtype: string}
+      - {name: reason, display_name: 判定依据, dtype: string}
+
+  - name: script
+    display_name: 话术脚本
+    description: 直播话术、短视频脚本、商品详情页文案片段
+    properties:
+      - {name: channel, display_name: 渠道, dtype: string}
+      - {name: content, display_name: 内容, dtype: string}
+      - {name: language, display_name: 语言, dtype: string}
+
+  - name: anchor
+    display_name: 达人主播
+    properties:
+      - {name: platform, display_name: 平台, dtype: string}
+      - {name: follower_count, display_name: 粉丝量, dtype: number}
+      - {name: category, display_name: 擅长品类, dtype: string}
+
+  - name: brand_party
+    display_name: 品牌委托方
+    description: 委托代工的品牌方（代工厂视角的客户）
+    properties:
+      - {name: contact, display_name: 对接人, dtype: string}
+
+  - name: factory
+    display_name: 代工厂
+    properties:
+      - {name: gmp_cert, display_name: GMP证书, dtype: string}
+      - {name: capacity, display_name: 产能, dtype: string}
+
+  - name: batch
+    display_name: 生产批次
+    properties:
+      - {name: batch_no, display_name: 批次号, dtype: string}
+      - {name: produce_date, display_name: 生产日期, dtype: date}
+      - {name: qc_report, display_name: 质检报告, dtype: string}
+
+  - name: violation
+    display_name: 违规风险项
+    description: 检查器输出：话术/宣称与法规的冲突点
+    properties:
+      - {name: severity, display_name: 严重度, dtype: string, description: "high / medium / low"}
+      - {name: suggestion, display_name: 修改建议, dtype: string}
+
+link_types:
+  - {name: contains_ingredient, display_name: 含有成分, source: product, target: ingredient, cardinality: many_to_many}
+  - {name: certified_by, display_name: 持有资质, source: product, target: certification}
+  - {name: commissioned_by, display_name: 委托方, source: product, target: brand_party}
+  - {name: made_by, display_name: 代工厂, source: product, target: factory}
+  - {name: produced_in_batch, display_name: 生产批次, source: product, target: batch}
+  - {name: mentions_claim, display_name: 提及宣称, source: script, target: claim}
+  - {name: promotes, display_name: 推广产品, source: script, target: product}
+  - {name: performed_by, display_name: 讲述人, source: script, target: anchor}
+  - {name: risks_violation, display_name: 触发违规, source: claim, target: violation}
+  - {name: cited_regulation, display_name: 依据条款, source: violation, target: regulation}
