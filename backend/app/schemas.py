@@ -72,6 +72,7 @@ class ObjectOut(BaseModel):
 
     id: str
     object_type_id: str
+    object_type_name: str = ""
     title: str
     properties: dict
     status: str

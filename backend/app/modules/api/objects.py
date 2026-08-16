@@ -25,7 +25,9 @@ def list_objects(
         query = query.where(Object.status == status)
     if q:
         query = query.where(Object.title.ilike(f"%{q}%"))
-    return db.scalars(query.limit(min(limit, 500))).all()
+    objs = db.scalars(query.limit(min(limit, 500))).all()
+    type_names = _type_name_map(db)
+    return [_with_type_name(o, type_names) for o in objs]
 
 
 @router.get("/graph", response_model=GraphOut)
@@ -89,13 +91,24 @@ def get_object(object_id: str, db: Session = Depends(get_db)):
         .where(Object.id != object_id)
         .limit(200)
     ).all()
+    type_names = _type_name_map(db)
     neighbors = [
         NeighborOut(
             link_type_id=link.link_type_id,
             link_type_name=link_type.name,
             direction="out" if link.source_object_id == object_id else "in",
-            object=ObjectOut.model_validate(other),
+            object=_with_type_name(other, type_names),
         )
         for link, link_type, other in rows
     ]
-    return ObjectDetailOut(**ObjectOut.model_validate(obj).model_dump(), neighbors=neighbors)
+    return ObjectDetailOut(**_with_type_name(obj, type_names).model_dump(), neighbors=neighbors)
+
+
+def _type_name_map(db: Session) -> dict[str, str]:
+    return {t.id: t.name for t in db.scalars(select(ObjectType)).all()}
+
+
+def _with_type_name(obj: Object, type_names: dict[str, str]) -> ObjectOut:
+    out = ObjectOut.model_validate(obj)
+    out.object_type_name = type_names.get(obj.object_type_id, "")
+    return out

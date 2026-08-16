@@ -1,0 +1,240 @@
+{
+  "ran_at": "2026-08-16T09:27:01",
+  "model": "deepseek-v4-pro@prompt-v2",
+  "prompt_version": "v2",
+  "pass_rate": 0.15,
+  "mean_recall": 0.225,
+  "results": [
+    {
+      "id": "hr-onboarding",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Request timed out.\n/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise APITimeoutError(request=request) from err\nopenai.APITimeoutError: Request timed out.\n"
+    },
+    {
+      "id": "hr-leave",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Request timed out.\n/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise APITimeoutError(request=request) from err\nopenai.APITimeoutError: Request timed out.\n"
+    },
+    {
+      "id": "it-asset",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "device",
+        "employee",
+        "vendor"
+      ],
+      "miss": [
+        "repair_ticket"
+      ],
+      "proposed": [
+        "asset_inventory",
+        "department",
+        "device",
+        "device_assignment",
+        "employee",
+        "procurement_agreement",
+        "supplier",
+        "ticket"
+      ],
+      "extra": [
+        "asset_inventory",
+        "department",
+        "device_assignment",
+        "procurement_agreement",
+        "ticket"
+      ]
+    },
+    {
+      "id": "sales-contract",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "customer",
+        "contract",
+        "product",
+        "sales_order",
+        "sales_rep"
+      ],
+      "miss": [],
+      "proposed": [
+        "customer",
+        "finance_dept",
+        "general_manager",
+        "legal",
+        "order_management_clerk",
+        "product",
+        "sales_contract",
+        "sales_director",
+        "sales_order",
+        "sales_rep"
+      ],
+      "extra": [
+        "finance_dept",
+        "general_manager",
+        "legal",
+        "order_management_clerk",
+        "sales_director"
+      ]
+    },
+    {
+      "id": "procurement",
+      "ok": false,
+      "recall": 0.75,
+      "hit": [
+        "supplier",
+        "material",
+        "purchase_order"
+      ],
+      "miss": [
+        "inspection"
+      ],
+      "proposed": [
+        "department",
+        "inbound_delivery",
+        "material",
+        "purchase_order",
+        "purchase_request",
+        "supplier",
+        "supplier_evaluation"
+      ],
+      "extra": [
+        "department",
+        "inbound_delivery",
+        "supplier_evaluation"
+      ]
+    },
+    {
+      "id": "cs-ticket",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "customer",
+        "ticket",
+        "agent",
+        "escalation"
+      ],
+      "miss": [],
+      "proposed": [
+        "customer",
+        "customer_service_agent",
+        "service_quality_meeting",
+        "technical_support",
+        "ticket"
+      ],
+      "extra": [
+        "service_quality_meeting"
+      ]
+    },
+    {
+      "id": "logistics",
+      "ok": true,
+      "recall": 1.0,
+      "hit": [
+        "sales_order",
+        "warehouse",
+        "carrier",
+        "shipment"
+      ],
+      "miss": [],
+      "proposed": [
+        "carrier",
+        "customer",
+        "department",
+        "driver",
+        "logistics_specialist",
+        "route",
+        "sales_order",
+        "shipment",
+        "warehouse"
+      ],
+      "extra": [
+        "customer",
+        "department",
+        "driver",
+        "logistics_specialist",
+        "route"
+      ]
+    },
+    {
+      "id": "finance-expense",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Request timed out.\n/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise APITimeoutError(request=request) from err\nopenai.APITimeoutError: Request timed out.\n"
+    },
+    {
+      "id": "project",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Request timed out.\n/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise APITimeoutError(request=request) from err\nopenai.APITimeoutError: Request timed out.\n"
+    },
+    {
+      "id": "recruit",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "equipment",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "product-release",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "bank-credit",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "insurance",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "education",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "lease",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "restaurant",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "pharma-trial",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    },
+    {
+      "id": "software-license",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Request timed out.\n/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1105, in request\n    raise APITimeoutError(request=request) from err\nopenai.APITimeoutError: Request timed out.\n"
+    },
+    {
+      "id": "health-commerce",
+      "ok": false,
+      "recall": 0.0,
+      "error": "Connection error.\nend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1382, in post\n    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/liuxing/ontology-fondury/backend/.venv/lib/python3.12/site-packages/openai/_base_client.py\", line 1122, in request\n    raise APIConnectionError(request=request) from err\nopenai.APIConnectionError: Connection error.\n"
+    }
+  ]
+}

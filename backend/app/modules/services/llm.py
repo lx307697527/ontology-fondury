@@ -1,4 +1,5 @@
 import json
+import time
 from json import JSONDecodeError
 
 from openai import OpenAI
@@ -8,7 +9,8 @@ from app.config import get_settings
 _JSON_ONLY = "只输出一个合法的 JSON 对象，不要包含 markdown 代码块或任何其他文字。Output only one valid JSON object, no markdown fences, no prose."
 
 # 提示词版本化：改提示词必须递增版本号，随 ExtractionRun.model 落库（如 gpt-4o-mini@prompt-v1）
-PROMPT_VERSION = "v1"
+# v2（2026-08-16）：修正"克制建模"压掉运营角色/组织单元、造词加业务前缀两类回归（见 eval report 对比）
+PROMPT_VERSION = "v2"
 
 INDUCTION_SYSTEM = f"""你是一位企业本体（ontology）架构师，风格参照 Palantir Foundry 的建模方法：以业务运营为中心，而不是照搬源系统的表结构。
 
@@ -17,7 +19,12 @@ INDUCTION_SYSTEM = f"""你是一位企业本体（ontology）架构师，风格�
 要求：
 - object type：name 用 snake_case 英文标识；display_name 和 description 用文档语言；每个类型最多 8 个属性（name/ display_name/ dtype/ description），dtype 取 string/number/date/boolean 之一；必须含一个能唯一定位实例的 title 属性语义。
 - link type：name 用 snake_case 动词短语（如 works_for / belongs_to / supplies）；source/target 用上面定义的 object type 的 name；cardinality 取 one_to_one/one_to_many/many_to_many。
-- 克制建模：只提出文档中反复出现、对业务运营有决策价值的概念，宁缺毋滥，总数控制在 3~10 个 object types。
+
+建模原则：
+- 人员角色与岗位独立建型，不要并入通用 employee/person：文档中出现的具体业务角色（如导师 mentor、客户经理 sales_rep、项目经理 project_manager、技师 technician、查勘定损员 adjuster、导师 advisor、客服坐席 agent、投保人 policyholder、借款人 borrower 等），只要承担特定职责或出现在业务关系中，就作为独立 object type，而不是当作 employee 的一个属性。通用 employee/person 仅在文档泛指、无特定角色关系时使用。
+- 组织单元独立建型：部门 department、支行/分公司 branch、岗位 position 等承载运营权限或汇报关系的组织节点，作为独立 object type，不要并入 employee。
+- 命名用领域通用规范名，不要加业务前缀造词：通用业务名词直接用规范名（如产品用 product 而非 health_food、工单用 ticket 而非 support_ticket、物业用 property 而非 commercial_property、维修单用 repair_ticket 而非 maintenance_work_order）。仅当文档中某概念确为该领域的强特化类型（有独有属性与关系、与通用概念并列出现）时才造词。
+- 克制建模的对象是"文档未出现、对运营无决策价值的噪声概念"，不是运营角色与组织单元；宁缺毋滥指的是不臆造，不指把文档中反复出现的运营角色压掉。总数控制在 4~12 个 object types。
 - {_JSON_ONLY}
 
 输出格式：
@@ -41,22 +48,30 @@ class LLM:
         s = get_settings()
         self.model = s.llm_model
         self.model_label = f"{s.llm_model}@prompt-{PROMPT_VERSION}"
-        # 显式超时：SDK 默认 600s × 内置重试叠加 complete_json 的 3 次重试会拖死管线
-        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key, timeout=120.0, max_retries=1)
+        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key, timeout=60.0, max_retries=1)
 
     def complete_json(self, system: str, user: str) -> dict:
-        # 推理型/小参数模型偶发包裹代码块或夹杂文字，解析失败时带错误信息重试
+        # 推理型/小参数模型偶发包裹代码块或夹杂文字，解析失败时带错误信息重试。
+        # 网络错误（超时/连接）带短退避重试：induction 是单次关键调用，值得重试；
+        # 抽取循环对单块失败另有 catch 兜底，最坏 3×60s 不会无限卡。
         messages = [
             {"role": "system", "content": system},
             {"role": "user", "content": user},
         ]
         last_error = ""
-        for _ in range(3):
-            resp = self.client.chat.completions.create(
-                model=self.model,
-                temperature=0.2,
-                messages=messages,
-            )
+        for attempt in range(3):
+            try:
+                resp = self.client.chat.completions.create(
+                    model=self.model,
+                    temperature=0.2,
+                    messages=messages,
+                )
+            except Exception as e:
+                # 网络抖动：退避后重试（最后一次仍失败则抛，交上层兜底）
+                if attempt < 2:
+                    time.sleep(2 * (attempt + 1))
+                    continue
+                raise RuntimeError(f"LLM 调用失败（{type(e).__name__}: {e}）") from e
             content = resp.choices[0].message.content or ""
             try:
                 return parse_json(content)

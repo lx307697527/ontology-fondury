@@ -109,6 +109,95 @@ th {
   border-radius: 8px;
 }
 
+.graph-wrap {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 16px;
+}
+
+.graph-canvas-wrap {
+  min-width: 0;
+}
+
+.graph-side {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.legend,
+.detail {
+  background: #12141c;
+  border: 1px solid #262b38;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.legend h3,
+.detail h3,
+.detail h4 {
+  font-size: 13px;
+  color: #aeb7cc;
+  margin-bottom: 8px;
+  font-weight: 500;
+}
+
+.legend ul,
+.neighbors {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.detail-title {
+  font-size: 14px;
+  margin: 4px 0 8px;
+  word-break: break-all;
+}
+
+.neighbors li {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  flex-wrap: wrap;
+}
+
+.neighbors .dir {
+  color: #8b93a7;
+}
+
+.neighbors .lt {
+  color: #2fd2c8;
+}
+
+.neighbors .nt {
+  color: #e6e8ee;
+}
+
+.detail table {
+  margin: 8px 0;
+}
+
+.detail td {
+  word-break: break-all;
+}
+
 .row {
   display: flex;
   gap: 12px;

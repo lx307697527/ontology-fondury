@@ -48,28 +48,47 @@ def _process(db: Session, doc: Document) -> ProcessResult:
     induction_run = ExtractionRun(document_id=doc.id, stage="induction", model=llm.model_label)
     db.add(induction_run)
     db.commit()
-    proposal = llm.induce_schema(chunks_text[:_SAMPLE_CHUNKS])
-    new_types = _merge_proposed_schema(db, proposal, doc.id)
-    induction_run.status, induction_run.finished_at = "ok", datetime.now(timezone.utc)
-    induction_run.summary = {
-        "proposed_object_types": len(proposal.get("object_types", [])),
-        "proposed_link_types": len(proposal.get("link_types", [])),
-        "created_object_types": new_types["object_types"],
-        "created_link_types": new_types["link_types"],
-    }
+    # induction 失败时降级：若库里已有归纳过的本体，直接复用进抽取，不整文档 failed
+    try:
+        proposal = llm.induce_schema(chunks_text[:_SAMPLE_CHUNKS])
+        new_types = _merge_proposed_schema(db, proposal, doc.id)
+        induction_run.status, induction_run.finished_at = "ok", datetime.now(timezone.utc)
+        induction_run.summary = {
+            "proposed_object_types": len(proposal.get("object_types", [])),
+            "proposed_link_types": len(proposal.get("link_types", [])),
+            "created_object_types": new_types["object_types"],
+            "created_link_types": new_types["link_types"],
+        }
+    except Exception as e:  # noqa: BLE001 - 归纳失败但已有本体时降级复用
+        existing_types = db.scalars(select(ObjectType).where(ObjectType.status != "archived")).all()
+        if not existing_types:
+            raise
+        new_types = {"object_types": 0, "link_types": 0}
+        induction_run.status, induction_run.finished_at = "failed", datetime.now(timezone.utc)
+        induction_run.summary = {"degraded": True, "error": f"{type(e).__name__}: {e}"[:200], "reused_object_types": len(existing_types)}
     db.commit()
 
     objects_upserted, links_upserted = 0, 0
     extraction_run = ExtractionRun(document_id=doc.id, stage="extraction", model=llm.model_label)
     db.add(extraction_run)
     db.commit()
+    failed_chunks: list[dict] = []
     for chunk in chunks:
         digest = _schema_digest(db)
-        result = llm.extract_instances(chunk.text, digest)
+        try:
+            result = llm.extract_instances(chunk.text, digest)
+        except Exception as e:  # noqa: BLE001 - 单块 LLM 调用失败不应整文档 failed；记录后继续下一块
+            failed_chunks.append({"chunk_seq": chunk.seq, "error": f"{type(e).__name__}: {e}"[:200]})
+            continue
         objects_upserted += _upsert_objects(db, result.get("objects", []), chunk.id)
         links_upserted += _upsert_links(db, result.get("links", []), chunk.id)
-    extraction_run.status, extraction_run.finished_at = "ok", datetime.now(timezone.utc)
-    extraction_run.summary = {"objects_upserted": objects_upserted, "links_upserted": links_upserted}
+    extraction_run.status = "ok" if not failed_chunks else "partial"
+    extraction_run.finished_at = datetime.now(timezone.utc)
+    extraction_run.summary = {
+        "objects_upserted": objects_upserted,
+        "links_upserted": links_upserted,
+        "failed_chunks": failed_chunks,
+    }
 
     doc.status = "processed"
     db.add(AuditLog(action="process", entity="document", entity_id=doc.id, detail={"chunks": len(chunks)}))
@@ -78,7 +97,7 @@ def _process(db: Session, doc: Document) -> ProcessResult:
         document_id=doc.id,
         status="processed",
         chunks=len(chunks),
-        new_object_types=new_types["object_types"],
+        new_object_types=new_types.get("object_types", 0) if isinstance(new_types, dict) else 0,
         objects_upserted=objects_upserted,
         links_upserted=links_upserted,
     )
