@@ -13,6 +13,7 @@ dependencies = [
     "openai>=1.40",
     "pypdf>=4.0",
     "python-multipart>=0.0.9",
+    "fastmcp>=2.0",
 ]
 
 [project.optional-dependencies]

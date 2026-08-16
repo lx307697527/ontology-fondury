@@ -61,6 +61,21 @@ input[type="file"] {
   font-size: 13px;
 }
 
+input[type="text"],
+textarea {
+  background: #12141c;
+  border: 1px solid #262b38;
+  color: #e6e8ee;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 13px;
+}
+
+a {
+  color: #6fa0ff;
+  font-size: 13px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;

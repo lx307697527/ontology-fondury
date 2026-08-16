@@ -95,6 +95,7 @@ class Link(Base):
     link_type_id: Mapped[str] = mapped_column(ForeignKey("link_types.id"), index=True)
     source_object_id: Mapped[str] = mapped_column(ForeignKey("objects.id"), index=True)
     target_object_id: Mapped[str] = mapped_column(ForeignKey("objects.id"), index=True)
+    status: Mapped[str] = mapped_column(String(20), default="draft")  # draft/approved/archived
     provenance: Mapped[str] = mapped_column(String(20), default="llm")
     confidence: Mapped[float] = mapped_column(Float, default=0.0)
     source_chunk_id: Mapped[str | None] = mapped_column(String(36), nullable=True)

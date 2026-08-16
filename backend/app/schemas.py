@@ -67,6 +67,21 @@ class LinkTypeOut(BaseModel):
     created_at: datetime
 
 
+class LinkOut(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: str
+    link_type_id: str
+    link_type_name: str = ""
+    source_object_id: str
+    source_title: str = ""
+    target_object_id: str
+    target_title: str = ""
+    status: str
+    provenance: str
+    confidence: float
+
+
 class ObjectOut(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 

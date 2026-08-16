@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, aliased
 
 from app.db import get_db
 from app.models import AuditLog, Link, LinkType, Object, ObjectType
-from app.schemas import ReviewAction
+from app.schemas import LinkOut, ReviewAction
 
 router = APIRouter()
 
@@ -13,10 +13,37 @@ _ENTITIES = {"object_type": ObjectType, "link_type": LinkType, "object": Object,
 
 @router.get("/queue")
 def review_queue(db: Session = Depends(get_db)):
+    source_obj = aliased(Object)
+    target_obj = aliased(Object)
+    link_rows = db.execute(
+        select(Link, LinkType, source_obj, target_obj)
+        .join(LinkType, Link.link_type_id == LinkType.id)
+        .join(source_obj, Link.source_object_id == source_obj.id, isouter=True)
+        .join(target_obj, Link.target_object_id == target_obj.id, isouter=True)
+        .where(Link.status == "draft")
+        .order_by(Link.confidence.desc())
+        .limit(50)
+    ).all()
+    links = [
+        LinkOut(
+            id=link.id,
+            link_type_id=link.link_type_id,
+            link_type_name=link_type.name,
+            source_object_id=link.source_object_id,
+            source_title=src.title if src else "",
+            target_object_id=link.target_object_id,
+            target_title=tgt.title if tgt else "",
+            status=link.status,
+            provenance=link.provenance,
+            confidence=link.confidence,
+        )
+        for link, link_type, src, tgt in link_rows
+    ]
     return {
         "object_types": db.scalars(select(ObjectType).where(ObjectType.status == "draft").limit(50)).all(),
         "link_types": db.scalars(select(LinkType).where(LinkType.status == "draft").limit(50)).all(),
         "objects": db.scalars(select(Object).where(Object.status == "draft").order_by(Object.confidence.desc()).limit(50)).all(),
+        "links": links,
     }
 
 

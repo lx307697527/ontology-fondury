@@ -39,21 +39,10 @@ export default function Home() {
     refresh();
   }
 
-  async function approve(typeId: string) {
-    setBusy(typeId);
-    await fetch(`${API_BASE}/api/review/object_type/${typeId}/approve`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ actor: "web-ui" }),
-    });
-    setBusy(null);
-    refresh();
-  }
-
   return (
     <main>
       <h1>ontology-fondry</h1>
-      <p className="subtitle">上传企业文档 → LLM 自动建本体和图谱 → 审核 → API / AI 应用消费</p>
+      <p className="subtitle">上传企业文档 → LLM 自动建本体和图谱 → 审核 → API / AI 应用消费 · <a href="/review">审核队列 →</a></p>
 
       <div className="panel">
         <h2>文档接入</h2>
@@ -99,7 +88,6 @@ export default function Home() {
                 <th>名称</th>
                 <th>状态</th>
                 <th>来源</th>
-                <th>操作</th>
               </tr>
             </thead>
             <tbody>
@@ -110,13 +98,6 @@ export default function Home() {
                   <td>{t.status}</td>
                   <td>
                     <span className={`badge ${t.provenance}`}>{t.provenance}</span>
-                  </td>
-                  <td>
-                    {t.status === "draft" && (
-                      <button disabled={busy === t.id} onClick={() => approve(t.id)}>
-                        审核通过
-                      </button>
-                    )}
                   </td>
                 </tr>
               ))}

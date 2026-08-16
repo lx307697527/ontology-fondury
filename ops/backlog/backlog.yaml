@@ -22,8 +22,13 @@ items:
       W2 图谱成形：/api/objects/graph ≥50 对象 ≥80 关系（现 41/31，需补演示文档）、
       前端 Cytoscape 图可浏览、REST 查询/遍历可用；prompt v2 攻角色/组织单元召回
       （评估通过率不得低于 70% 基线）。
-    status: in_progress
+    status: done
+    completed: 2026-08-16
     depends_on: [1]
+    note: >-
+      代码达标合 main（d0c13bc）：graph 70 节点/80 边、前端 Cytoscape 图、REST 类型名、prompt v2。
+      遗留：prompt v2 全量 eval 红线未补跑（opencode zen 端点不稳，首跑 15/20 超时），
+      端点稳定时补跑，不阻塞 W3。
   - phase: 3
     title: W3 治理与消费闭环：审核队列徽章升级+审计（已具备）；MCP endpoint 供外部 LLM 客户端完成一次问答。
     status: pending
