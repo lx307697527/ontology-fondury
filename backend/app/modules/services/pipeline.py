@@ -62,6 +62,10 @@ def _process(db: Session, doc: Document) -> ProcessResult:
     except Exception as e:  # noqa: BLE001 - 归纳失败但已有本体时降级复用
         existing_types = db.scalars(select(ObjectType).where(ObjectType.status != "archived")).all()
         if not existing_types:
+            # 无可复用本体：induction 硬失败，落 ExtractionRun=failed 再抛，由 run_pipeline 兜底转 document failed（层 4 错误路径）
+            induction_run.status, induction_run.finished_at = "failed", datetime.now(timezone.utc)
+            induction_run.summary = {"error": f"{type(e).__name__}: {e}"[:200]}
+            db.commit()
             raise
         new_types = {"object_types": 0, "link_types": 0}
         induction_run.status, induction_run.finished_at = "failed", datetime.now(timezone.utc)

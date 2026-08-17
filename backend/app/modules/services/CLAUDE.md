@@ -14,4 +14,5 @@ LLM 管线与文本处理。所有外部模型调用只发生在 `llm.py`，所�
   - v1（2026-08-16）：初版克制建模基线
   - v2（2026-08-16）：修正"克制建模"压掉运营角色/组织单元、造词加业务前缀两类回归——人员角色（mentor/sales_rep/project_manager/technician/adjuster 等）与组织单元（branch/position）独立建型，命名用领域通用规范名（product 而非 health_food）
 - objects 按 (object_type_id, title_key) 去重合并属性取并集，links 按三元组唯一
+- 错误路径兜底（FEAT-001 层 4）：`llm.py` 客户端 `timeout=120s` + `max_retries=1` + `complete_json` 3 次循环（非法 JSON/网络错均兜底，最终抛 ValueError/RuntimeError）；`pipeline.py` 外层 catch 把任何失败落 `document.failed` + 错误串，induction 硬失败（无可复用本体）前显式落 `ExtractionRun.status=failed` 再抛，降级分支同样落 failed
 - 评估集与跑分脚本在 `../../../eval/`（backend/eval，不在本模块地图管辖内）

@@ -27,15 +27,26 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    healthcheck:
+      # python:slim 无 curl，用标准库探 /api/health
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/api/health').read()"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+      start_period: 10s
 
   web:
-    build: ./frontend
+    build:
+      context: ./frontend
+      args:
+        NEXT_PUBLIC_API_BASE: http://localhost:8000
     environment:
       NEXT_PUBLIC_API_BASE: http://localhost:8000
     ports:
       - "3000:3000"
     depends_on:
-      - api
+      api:
+        condition: service_healthy
 
 volumes:
   pgdata:

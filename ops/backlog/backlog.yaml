@@ -31,9 +31,19 @@ items:
       端点稳定时补跑，不阻塞 W3。
   - phase: 3
     title: W3 治理与消费闭环：审核队列徽章升级+审计（已具备）；MCP endpoint 供外部 LLM 客户端完成一次问答。
-    status: pending
+    status: done
+    completed: 2026-08-17
     depends_on: [2]
+    note: >-
+      合 main（738fdea）。四类审核闭环（object_type/link_type/object/link）db 复证 + MCP demo 四工具 +
+      harness 0 failed。遗留人工产出：真实 LLM 客户端（opencode/Claude Desktop）问答截图待落 docs/demo/w3-mcp/。
   - phase: 4
     title: W4 端到端硬化：docker-compose 一键起、完整演示脚本、错误路径兜底、周报。
-    status: pending
+    status: done
+    completed: 2026-08-17
     depends_on: [3]
+    note: >-
+      DoD 全绿。docker compose up --build 三服务 healthy + /api/health 200 + :3000 200；
+      scripts/demo_w4.py 串起上传→process→graph(84/93)→审核→MCP 三问，报告 docs/demo/w4/run-02.md；
+      错误路径三条 backend/tests/test_error_paths.py 4 测试自动化 + docs/demo/w4/error-paths.md 手动复现；
+      周报 docs/weekly-report-w4.md；harness check 0 failed。遗留：process 因 LLM 端点不稳偶发超时（mock 兜底）。

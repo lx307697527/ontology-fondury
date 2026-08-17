@@ -48,7 +48,9 @@ class LLM:
         s = get_settings()
         self.model = s.llm_model
         self.model_label = f"{s.llm_model}@prompt-{PROMPT_VERSION}"
-        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key, timeout=60.0, max_retries=1)
+        # timeout 120s 对齐 FEAT-001 design/DoD：防 SDK 默认 600s × 重试叠加拖死管线
+        # （LLM 不可达时由 complete_json 3 次循环 + 此超时兜底，最终落 document failed）
+        self.client = OpenAI(base_url=s.llm_base_url, api_key=s.llm_api_key, timeout=120.0, max_retries=1)
 
     def complete_json(self, system: str, user: str) -> dict:
         # 推理型/小参数模型偶发包裹代码块或夹杂文字，解析失败时带错误信息重试。

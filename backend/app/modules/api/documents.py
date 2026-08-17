@@ -19,7 +19,8 @@ def upload_document(file: UploadFile, db: Session = Depends(get_db)):
         doc.raw_text = parsing.extract_text(doc.filename, data)
         doc.status = "parsed"
     except ValueError as e:
-        doc.error = str(e)
+        # 不支持的文件类型：落库带 error + status=failed，process 据此返回 400（FEAT-001 层 4 错误路径）
+        doc.status, doc.error = "failed", str(e)
     db.add(doc)
     db.commit()
     return doc
